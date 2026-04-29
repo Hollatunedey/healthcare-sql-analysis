@@ -1,0 +1,31 @@
+# Healthcare Database Query Analysis
+
+**Prepared by:** OLATUNDE AWOLAJA  
+
+## Overview
+This repository contains SQL queries developed to analyze a healthcare management database comprising patients, doctors, and appointments.
+
+The objective is to:
+- Filter patients by location
+- Perform gender-based aggregation
+- Identify doctors associated with confirmed appointments
+
+---
+
+## Tasks and Solutions
+
+### 1. Patients in FCT Abuja and Plateau
+
+```sql
+SELECT *
+FROM patients
+WHERE LOWER(state) IN ('fct abuja', 'plateau');
+SELECT 
+    SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END) AS male_patients,
+    SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END) AS female_patients
+FROM patients;
+SELECT DISTINCT d.name, d.specialty, p.state
+FROM doctors d
+JOIN appointments a ON d.id = a.doctor_id
+JOIN patients p ON a.patient_id = p.id
+WHERE a.status = 'Confirmed';
